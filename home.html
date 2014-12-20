@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta property="og:title" content="Greatest Games" />
+<title>Galactic Shootout</title>
+<style > 
+body{
+    background-color: black;
+    text-align: center;
+    color:white;
+}
+#two_player
+{
+    position:absolute;
+    height:66px;
+    width:200px;
+    left:700px;
+    top:500px;
+    border-color:white;
+    font-family:Arial;
+    font-weight:bold;
+    font-size:20px;
+    border-radius:10px;
+    color:white;
+    background: -webkit-radial-gradient(rgba(255, 87, 0, 1), rgba(255, 56, 0, 1), rgba(255, 26, 0, 1)); /* Safari */
+    background: -o-radial-gradient(rgba(255, 87, 0, 1), rgba(255, 56, 0, 1), rgba(255, 26, 0, 1)); /* For Opera 11.1 to 12.0 */
+    background: -moz-radial-gradient(rgba(255, 87, 0, 1),rgba(255, 56, 0, 1), rgba(255, 26, 0, 1)); /* For Firefox 3.6 to 15 */
+    background: radial-gradient(rgba(255, 87, 0, 1),rgba(255, 56, 0, 1), rgba(255, 26, 0, 1)); /* Standard syntax */
+    cursor:pointer;
+}
+#two_player:hover
+{
+    border-color:blue;
+    color:blue;
+}
+#live
+{
+    position:absolute;
+    height:66px;
+    width:200px;
+    left:700px;
+    top:600px;
+    font-size:20px;
+    border-color:white;
+    font-family:Arial;
+    font-weight:bold;
+    border-radius:10px;
+    color:white;
+    background: -webkit-radial-gradient(rgba(255, 87, 0, 1), rgba(255, 56, 0, 1), rgba(255, 26, 0, 1)); /* Safari */
+    background: -o-radial-gradient(rgba(255, 87, 0, 1), rgba(255, 56, 0, 1), rgba(255, 26, 0, 1)); /* For Opera 11.1 to 12.0 */
+    background: -moz-radial-gradient(rgba(255, 87, 0, 1),rgba(255, 56, 0, 1), rgba(255, 26, 0, 1)); /* For Firefox 3.6 to 15 */
+    background: radial-gradient(rgba(255, 87, 0, 1),rgba(255, 56, 0, 1), rgba(255, 26, 0, 1)); /* Standard syntax */
+    cursor:pointer;
+}
+#instructions
+{
+    position:absolute;
+    height:66px;
+    width:200px;
+    left:700px;
+    top:700px;
+    font-size:20px;
+    border-color:white;
+    font-family:Arial;
+    font-weight:bold;
+    border-radius:10px;
+    color:white;
+    background: -webkit-radial-gradient(rgba(255, 87, 0, 1), rgba(255, 56, 0, 1), rgba(255, 26, 0, 1)); /* Safari */
+    background: -o-radial-gradient(rgba(255, 87, 0, 1), rgba(255, 56, 0, 1), rgba(255, 26, 0, 1)); /* For Opera 11.1 to 12.0 */
+    background: -moz-radial-gradient(rgba(255, 87, 0, 1),rgba(255, 56, 0, 1), rgba(255, 26, 0, 1)); /* For Firefox 3.6 to 15 */
+    background: radial-gradient(rgba(255, 87, 0, 1),rgba(255, 56, 0, 1), rgba(255, 26, 0, 1)); /* Standard syntax */
+    cursor:pointer;
+}
+#live:hover
+{
+    border-color:blue;
+    color:blue;
+}
+#instructions:hover
+{
+    border-color:blue;
+    color:blue;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="http://www.greatestgamez.com/css_files/homestylecss.css"/>
+<link rel="shortcut icon" href="http://www.greatestgamez.com/images/favicon.ico">
+    <script type="text/javascript" src="simpleGame.js"></script>
+    <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.6/firebase.js'></script>
+    <script type="text/javascript">
+        var scene;
+        var cover;
+        var youwin;
+        var youlose;
+        var mainscreen;
+        var twoplayeron;
+        var twoplayeroff;
+        var instructionson;
+        var instructionsoff;
+        var live;
+        var sprite1;
+        var sprite2;
+        var shield;
+        var greenbullets;
+        var greenbulletcount;
+        var redbullets;
+        var redbulletcount;
+        var rearliest;
+        var earliest;
+        var bullet;
+        var bulletg;
+        var bar;
+        var bar2;
+        var healthgreen;
+        var healthred;
+        var freezetimer;
+        var freeze1;
+        var freeze2;
+        var freezeexistleft;
+        var freezeexistright;
+        var spritefreeze1;
+        var spritefreeze2;
+        var spritetimer1;
+        var spritetimer2;
+        var speed1;
+        var speed2;
+        var speedtimer;
+        var speedexistleft;
+        var speedexistright;
+        var spritespeed1;
+        var spritespeed2;
+        var spritespeedtimer1;
+        var spritespeedtimer2;
+        var winner;
+        window.addEventListener("keydown", function(e) {
+    // space and arrow keys
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+}, false);
+        function init()
+        {
+                scene =new Scene();
+                scene.setSize(351,650);
+                mainscreen=true;
+                cover=new Sprite(scene,"character.png",125,125);
+                cover.setSpeed(3);
+                cover.setPosition(175,100);
+                //twoplayeroff = new Sprite(scene,"twoplayeroff.png",300,100);
+                //twoplayeroff.setSpeed(0);
+                //twoplayeroff.setPosition(175,325);
+                //twoplayeron = new Sprite(scene,"twoplayeron.png",300,100);
+                //twoplayeron.setPosition(175,325);
+                //twoplayeron.setSpeed(0);
+                //twoplayeron.hide();
+                //instructionson=new Sprite(scene,"instructionson.png",300,100);
+                //instructionsoff=new Sprite(scene,"instructionsoff.png",300,100);
+                //instructionson.setSpeed(0);
+                //instructionson.setPosition(175,575);
+                //instructionsoff.setSpeed(0);
+                //instructionsoff.setPosition(175,575);
+                //live=new Sprite(scene,"",,); 
+                winner="";
+                scene.start();
+        }
+        function gameStart()
+        {
+            bar=new Sprite(scene,"bar.png",352,3);
+            bar.setPosition(175,624);
+            bar.setSpeed(0);
+            bar2=new Sprite(scene,"bar.png",352,3);
+            bar2.setPosition(175,25);
+            bar2.setSpeed(0);
+            sprite1=new Sprite(scene, "character2.png",50,50);
+            sprite1.setPosition(175,602);
+            sprite1.setSpeed(0);
+            sprite2=new Sprite(scene, "opponent2.png",50,50);
+            sprite2.setPosition(175,52);
+            sprite2.setSpeed(0);
+            shield=new Sprite(scene,"shield.png",352,10);
+            shield.setPosition(175,325);
+            shield.setSpeed(0);
+            greenbullets=new Array();
+            redbullets=new Array();
+            greenbulletcount=0;
+            redbulletcount=0;
+            rearliest=0;
+            earliest=0;
+            healthgreen=50;
+            healthred=50;
+            bullet=new Timer();
+            bulletg=new Timer();
+            freezetimer=new Timer();
+            freezeexistleft=false;
+            freezeexistright=false;
+            spritefreeze1=false;
+            spritefreeze2=false;
+            spritetimer1=new Timer();
+            spritetimer2=new Timer();
+            speedtimer=new Timer();
+            speedexistleft=false;
+            speedexistright=false;
+            spritespeed1=false;
+            spritespeed2=false;
+            spritespeedtimer1=new Timer();
+            spritespeedtimer2=new Timer();
+            scene.start();
+        }
+        function update()
+        {
+            if (mainscreen)
+            {
+                scene.clear();
+                cover.update();
+                //twoplayeroff.update();
+                //twoplayeron.update();
+                //instructionsoff.update();
+                //instructionson.update();
+                var c = scene.canvas;
+                var ctx = c.getContext("2d");
+                ctx.font = "30px Arial";
+                ctx.fillStyle="White";
+                ctx.fillText(winner,80,250);
+                ctx.fillText("Click Screen to play",40,400);
+                if (true)
+                {
+                    if (document.mouseClicked) {
+                        cover.setSpeed(0);
+                        cover.hide();
+                        //twoplayeroff.hide();
+                        //twoplayeron.hide();
+            
+                        mainscreen=false;
+                        gameStart();
+                    }
+                }
+                if (false)
+                {
+                    
+                }
+                if (false)
+                {
+                    
+                }
+                //update();
+            }
+            else
+            {
+                scene.clear();
+                //var myDataRef = new Firebase('https://gcxoybedy02.firebaseio-demo.com/');
+                //myDataRef.set("jyhgjyghg");
+                //handle events here
+                //update all the sprites
+                bulletSpriteCollides();
+                handleKeys();
+                bulletUpdate();
+                if (healthred<=0)
+                {
+                    scene.clear();
+                    scene.stop();
+                    mainscreen=true;
+                    cover.show();
+                    cover.setSpeed(3);
+                    winner="GREEN WINS";
+                    update();
+                }
+                if (healthgreen<=0)
+                {
+                    scene.clear();
+                    scene.stop();
+                    mainscreen=true;
+                    cover.show();
+                    cover.setSpeed(3);
+                    winner="RED WINS";
+                    update();
+                }
+                freezeCollide();
+                createFreeze()
+                speedCollide();
+                createSpeed();
+                shield.update();
+                sprite2.update();
+                sprite1.update();
+                updateGreenBullets();
+                updateRedBullets();
+                bar.update();
+                bar2.update();
+                updateHealth();
+                updateFreeze();
+                updateSpeed();
+            }
+        }
+        function bulletSpriteCollides()
+        {
+            for(var a=rearliest;a<redbullets.length;a++)
+            {
+                if(redbullets[a].collidesWith(bar))
+                {
+                    redbullets[a].hide();
+                    healthgreen=healthgreen-1;
+                }
+            }
+            for(var s=earliest;s<greenbullets.length;s++)
+            {
+                if(greenbullets[s].collidesWith(bar2))
+                {
+                    greenbullets[s].hide();
+                    healthred=healthred-1;
+                }
+            }
+            for(var d=rearliest;d<redbullets.length;d++)
+            {
+                if (redbullets[d].collidesWith(sprite1))
+                {
+                    redbullets[d].hide();
+                }
+            }
+            for (var z=earliest;z<greenbullets.length;z++)
+            {
+                if (greenbullets[z].collidesWith(sprite2))
+                {
+                    greenbullets[z].hide();
+                }
+            }
+        }
+        function handleKeys()
+        {
+            if (keysDown[K_SPACE]&&(!spritefreeze1||spritetimer1.getTimeElapsed()>5))
+            {
+                if (bulletg.getTimeElapsed()>0.5)
+                {
+                    spritefreeze1=false;
+                    greenbullets[greenbulletcount]=new Sprite(scene,"greenbullet2.png",10,20);
+                    greenbullets[greenbulletcount].setSpeed(0);
+                    greenbullets[greenbulletcount].setBoundAction(DIE);
+                    greenbullets[greenbulletcount].setX(sprite1.x);
+                    greenbullets[greenbulletcount].setY(sprite1.y);
+                    greenbulletcount++;
+                    bulletg.reset();
+                }
+                
+            }
+            if (keysDown[K_1]&&(!spritefreeze2||spritetimer2.getTimeElapsed()>4))
+            {
+                spritefreeze2=false;
+                if (bullet.getTimeElapsed()>0.5)
+                {
+                    redbullets[redbulletcount]=new Sprite(scene,"redbullet2.png",10,20);
+                    redbullets[redbulletcount].setSpeed(0);
+                    redbullets[redbulletcount].setBoundAction(DIE);
+                    redbullets[redbulletcount].setX(sprite2.x);
+                    redbullets[redbulletcount].setY(sprite2.y);
+                    redbulletcount++;
+                    bullet.reset();
+                }
+            }
+            if (keysDown[K_DOWN]&&(!spritefreeze1||spritetimer1.getTimeElapsed()>4))
+            {
+                spritefreeze1=false;
+                sprite1.setY(sprite1.y+11);
+            }
+            if (keysDown[K_UP]&&(!spritefreeze1||spritetimer1.getTimeElapsed()>4))
+            {
+                spritefreeze1=false;
+                sprite1.setY(sprite1.y-11);
+            }
+            if (keysDown[K_RIGHT]&&(!spritefreeze1||spritetimer1.getTimeElapsed()>4))
+            {
+                spritefreeze1=false;
+                sprite1.setX(sprite1.x+11);
+            }
+            if (keysDown[K_LEFT]&&(!spritefreeze1||spritetimer1.getTimeElapsed()>4))
+            {
+                spritefreeze1=false;
+                sprite1.setX(sprite1.x-11);
+            }
+            if (keysDown[K_W]&&(!spritefreeze2||spritetimer2.getTimeElapsed()>4))
+            {
+                spritefreeze2=false;
+                sprite2.setY(sprite2.y-11);
+            }
+            if (keysDown[K_A]&&(!spritefreeze2||spritetimer2.getTimeElapsed()>4))
+            {
+                spritefreeze2=false;
+                sprite2.setX(sprite2.x-11);
+            }
+            if (keysDown[K_S]&&(!spritefreeze2||spritetimer2.getTimeElapsed()>4))
+            {
+                spritefreeze2=false;
+                sprite2.setY(sprite2.y+11);
+            }
+            if (keysDown[K_D]&&(!spritefreeze2||spritetimer2.getTimeElapsed()>4))
+            {
+                spritefreeze2=false;
+                sprite2.setX(sprite2.x+11);
+            }
+        }
+        function bulletUpdate()
+        {
+            for(var q=earliest;q<greenbullets.length;q++)
+            {
+                if (greenbullets[q]<0)
+                {
+                    earliest=earliest+1;
+                    continue;
+                }
+                else
+                {
+                    if (spritespeed2&&spritespeedtimer2.getTimeElapsed()<8)
+                    {
+                        greenbullets[q].setY(greenbullets[q].y-12); 
+                    }
+                    else
+                    {
+                        greenbullets[q].setY(greenbullets[q].y-7);    
+                    }
+                }
+            }
+            for(var w=rearliest;w<redbullets.length;w++)
+            {
+                if (redbullets[w]<0)
+                {
+                    rearliest=rearliest+1;
+                    continue;
+                }
+                else
+                {
+                    if (spritespeed1&&spritespeedtimer1.getTimeElapsed()<8)
+                    {
+                       redbullets[w].setY(redbullets[w].y+12);   
+                    }
+                    else
+                    {
+                        redbullets[w].setY(redbullets[w].y+7);           
+                    }
+                     
+                }
+            }
+        }
+        function updateGreenBullets()
+        {
+            for(var p=earliest;p<greenbullets.length;p++)
+            {
+                greenbullets[p].update();
+            }
+        }
+        function updateRedBullets()
+        {
+            for(var u=rearliest;u<redbullets.length;u++)
+            {
+                redbullets[u].update();
+            }
+        }
+        function updateHealth()
+        {
+            scene.context.fillStyle="purple";
+            scene.context.fillRect(0,0,351-(7*(50-healthred)),25);
+            scene.context.fillRect(0,625,351-(7*(50-healthgreen)),25);
+        }
+        function updateSpeed()
+        {
+            if (speedexistleft)
+            {
+                speed1.setX(speed1.x+1);
+                speed2.setX(speed2.x+1);
+                if (speed1.x>352)
+                {
+                    speedexistleft=false;
+                    speedexistright=false;
+                    spritespeed2=false;
+                }
+                if (speed2.x>352)
+                {
+                    speedexistleft=false;
+                    speedexistright=false;
+                    spritespeed1=false;
+                }
+                speed1.update();
+                speed2.update();
+            }
+            if (speedexistright)
+            {
+                speed1.setX(speed1.x-1);
+                speed2.setX(speed2.x-1);
+                if (speed1.x<0)
+                {
+                    speedexistleft=false;
+                    speedexistright=false;
+                    spritespeed2=false;
+                }
+                if (speed2.x<0)
+                {
+                    speedexistleft=false;
+                    speedexistright=false;
+                    spritespeed1=false;
+                }
+                speed1.update();
+                speed2.update();
+            }
+        }
+        function updateFreeze()
+        {
+            if (freezeexistleft)
+            {
+                freeze1.setX(freeze1.x+2);
+                freeze2.setX(freeze2.x+2);
+                if (freeze1.x>352)
+                {
+                    freezeexistleft=false;
+                    freezeexistright=false;
+                    spritefreeze2=false;
+                }
+                if (freeze2.x>352)
+                {
+                    freezeexistleft=false;
+                    freezeexistright=false;
+                    spritefreeze1=false;
+                }
+                freeze1.update();
+                freeze2.update();
+            }
+            if (freezeexistright)
+            {
+                freeze1.setX(freeze1.x-2);
+                freeze2.setX(freeze2.x-2);
+                if (freeze1.x<0)
+                {
+                    freezeexistleft=false;
+                    freezeexistright=false;
+                    spritefreeze2=false;
+                }
+                if (freeze2.x<0)
+                {
+                    freezeexistleft=false;
+                    freezeexistright=false;
+                    spritefreeze1=false;
+                }
+                freeze1.update();
+                freeze2.update();
+            }
+        }
+        function speedCollide()
+        {
+            if (speedexistleft||speedexistright)
+            {
+                for(var g=earliest;g<greenbullets.length;g++)
+                {
+                    if (speed1.collidesWith(greenbullets[g]))
+                    {
+                        speed1.hide();
+                        speed2.hide();
+                        greenbullets[g].hide();
+                        speedexistleft=false;
+                        speedexistright=false;
+                        spritespeed1=false;
+                        spritespeed2=true;
+                        spritespeedtimer2.reset();
+                        break;
+                    }
+                }
+                if (!spritespeed1)
+                {
+                    for(var h=rearliest;h<redbullets.length;h++)
+                    {
+                        if (speed2.collidesWith(redbullets[h]))
+                        {
+                            speed2.hide();
+                            speed1.hide();
+                            speedexistleft=false;
+                            speedexistright=false;
+                            spritespeed1=true;
+                            spritespeed2=false;
+                            spritespeedtimer1.reset();
+                            break;
+                        }
+                    }
+                }
+            }
+        }  
+        function freezeCollide()
+        {
+            if (freezeexistleft||freezeexistright)
+            {
+                for(var g=earliest;g<greenbullets.length;g++)
+                {
+                    if (freeze1.collidesWith(greenbullets[g]))
+                    {
+                        freeze1.hide();
+                        freeze2.hide();
+                        greenbullets[g].hide();
+                        freezeexistleft=false;
+                        freezeexistright=false;
+                        spritefreeze1=false;;
+                        spritefreeze2=true;
+                        spritetimer2.reset();
+                        break;
+                    }
+                }
+                if (!spritefreeze1)
+                {
+                    for(var h=rearliest;h<redbullets.length;h++)
+                    {
+                        if (freeze2.collidesWith(redbullets[h]))
+                        {
+                            freeze2.hide();
+                            freeze1.hide();
+                            freezeexistleft=false;
+                            freezeexistright=false;
+                            spritefreeze1=true;
+                            spritefreeze2=false;
+                            spritetimer1.reset();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        function createSpeed()
+        {
+        if (Math.floor((Math.random()*10)+1)<3&&speedtimer.getTimeElapsed()>20&&!speedexistleft&&!speedexistright)
+            {
+                speed1=new Sprite(scene,"speed2.png",50,30);
+                speed2=new Sprite(scene,"speed2.png",50,30);
+                if (Math.floor((Math.random()*100)+1)<50)
+                {
+                    speedexistleft=true;
+                    speed1.setPosition(26,15);
+                    speed1.setBoundAction(DIE);
+                    speed2.setPosition(26,635);
+                    speed2.setBoundAction(DIE);
+                }
+                else
+                {
+                    speedexistright=true;
+                    speed1.setPosition(325,15);
+                    speed1.setBoundAction(DIE);
+                    speed2.setPosition(325,635);
+                    speed2.setBoundAction(DIE);
+                }
+                speed1.setSpeed(0);
+                speed2.setSpeed(0);
+                speedtimer.reset();
+            }
+        }
+        function createFreeze()
+        {
+            if (Math.floor((Math.random()*10)+1)<3&&freezetimer.getTimeElapsed()>30&&!freezeexistleft&&!freezeexistright)
+            {
+                freeze1=new Sprite(scene,"freeze.png",30,30);
+                freeze2=new Sprite(scene,"freeze.png",30,30);
+                if (Math.floor((Math.random()*100)+1)<50)
+                {
+                    freezeexistleft=true;
+                    freeze1.setPosition(23,15);
+                    freeze1.setBoundAction(DIE);
+                    freeze2.setPosition(23,635);
+                    freeze2.setBoundAction(DIE);
+                }
+                else
+                {
+                    freezeexistright=true;
+                    freeze1.setPosition(328,15);
+                    freeze1.setBoundAction(DIE);
+                    freeze2.setPosition(328,635);
+                    freeze2.setBoundAction(DIE);
+                }
+                freeze1.setSpeed(0);
+                freeze2.setSpeed(0);
+                freezetimer.reset();
+            }
+        }
+    </script>
+</head>
+<body onload="init()">
+<?php generateHeader("action");?>
+<p>
+   <h1>GALAXY SHOOT</h1>
+   <h5>
+    INSTRUCTIONS:
+   </h5>
+   <p>Player 1 uses arrow keys to move and space bar to shoot. Player 2 uses WASD to move and '1' key to shoot.</p>
+   <p>Freeze Powerup freezes opponent. Speed powerup gives quicker bullets. Hit the enemy's back panel to reduce their health.</p>
+   <p>Player characters can absorb bullets.</p>
+</p>
+<div id="beforefooter">
+</div>
+<p></p>
+</body>
+</html>
